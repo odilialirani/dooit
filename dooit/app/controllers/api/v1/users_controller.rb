@@ -5,12 +5,10 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def create
-    user = User.create(user_params)
-    if recipe
-      render json: user
-    else
-      render json: user.errors
-    end
+    puts params
+    @user = User.create(username: params[:username], password: params[:password])
+    # session[:user_id] = @user.id
+    redirect_to '/users'
   end
 
   def show

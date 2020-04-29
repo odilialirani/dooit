@@ -11,6 +11,13 @@ export default () => (
         </p>
         <hr className="my-4" />
         <Link
+          to="/users"
+          className="btn btn-lg custom-button"
+          role="button"
+        >
+          View Users
+        </Link>
+        <Link
           to="/login"
           className="btn btn-lg custom-button"
           role="button"
@@ -19,7 +26,7 @@ export default () => (
         </Link>
 
         <Link
-          to="/users/new"
+          to="/users/create"
           className="btn btn-lg custom-button"
           role="button"
         >
