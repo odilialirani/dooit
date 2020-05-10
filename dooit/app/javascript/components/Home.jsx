@@ -19,7 +19,7 @@ export default () => (
         </Link>
 
         <Link
-          to="/users/new"
+          to="/sign_up"
           className="btn btn-lg custom-button"
           role="button"
         >

@@ -7,31 +7,44 @@ class SignUp extends React.Component {
     super(props);
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      first_name: '',
+      last_name: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
+    console.log(event.target.name)
+    console.log(event.target.value)
     this.setState({
-      username: event.target.username,
-      password: event.target.password
+      [event.target.name] : event.target.value
     });
+
   }
 
   handleSubmit(event) {
+    const token = document.querySelector('meta[name="csrf-token"]').content;
     let user = {
-      username: username,
-      password: password,
+      username: this.state.username,
+      password: this.state.password,
+      first_name: this.state.first_name,
+      last_name: this.state.last_name
     }
 
-    axios.post('http://localhost:3000/users', {user})
-      .then(response => {
+    console.log(user)
+    fetch('http://localhost:3000/api/v1/users/create', {
+      method: "POST",
+      headers: {
+        "X-CSRF-Token": token,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(user)
+    }).then(response => {
         console.log(response)
     })
-    .catch(error => console.log('api errors:', error))
-    // event.preventDefault();
+    event.preventDefault();
   }
 
   render() {
@@ -42,11 +55,19 @@ class SignUp extends React.Component {
             <form onSubmit={this.handleSubmit}>
               <label>
                 Username:
-                <input type="text" value={this.state.username} onChange={this.handleChange} />
+                <input type="text" name="username" value={this.state.username} onChange={this.handleChange} />
               </label>
               <label>
                 Password:
-                <input type="text" value={this.state.password} onChange={this.handleChange} />
+                <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
+              </label>
+              <label>
+                First Name:
+                <input type="text" name="first_name" value={this.state.first_name} onChange={this.handleChange} />
+              </label>
+              <label>
+                Last Name:
+                <input type="text" name="last_name" value={this.state.last_name} onChange={this.handleChange} />
               </label>
               <input type="submit" value="Submit" />
             </form>
