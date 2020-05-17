@@ -27,7 +27,7 @@ class Login extends React.Component {
       password: this.state.password,
     }
 
-    fetch('http://localhost:3000/api/v1/users/create', {
+    fetch('http://localhost:3000/login', {
       method: "POST",
       headers: {
         "X-CSRF-Token": token,

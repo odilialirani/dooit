@@ -14,8 +14,7 @@ class Api::V1::UsersController < ApplicationController
       first_name: user_params[:first_name],
       last_name: user_params[:last_name]
     )
-    # session[:user_id] = @user.id
-    redirect_to '/users'
+    session[:user_id] = @user.id
   end
 
   def show

@@ -6,11 +6,9 @@ Rails.application.routes.draw do
   end
   
   # Authentication routes
-  # resources :users, only: [:new, :create]
-  # post 'users/create', to: 'users#create'
-  # post '/login', to: 'sessions#create'
-  # delete '/logout', to: 'sessions#destroy'
-  # get '/logged_in', to: 'sessions#is_logged_in?'
+  post 'login', to: 'sessions#create'
+  get '/logged_in', to: 'sessions#is_logged_in?'
+  delete '/logout', to: 'sessions#destroy'
 
   namespace :api do
     namespace :v1 do

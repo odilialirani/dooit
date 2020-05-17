@@ -16,16 +16,14 @@ class SignUp extends React.Component {
   }
 
   handleChange(event) {
-    console.log(event.target.name)
-    console.log(event.target.value)
     this.setState({
       [event.target.name] : event.target.value
     });
-
   }
 
   handleSubmit(event) {
     const token = document.querySelector('meta[name="csrf-token"]').content;
+
     let user = {
       username: this.state.username,
       password: this.state.password,
@@ -33,7 +31,6 @@ class SignUp extends React.Component {
       last_name: this.state.last_name
     }
 
-    console.log(user)
     fetch('http://localhost:3000/api/v1/users/create', {
       method: "POST",
       headers: {
@@ -41,9 +38,8 @@ class SignUp extends React.Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(user)
-    }).then(response => {
-        console.log(response)
-    })
+    }).then(response => this.props.history.push("/users"))
+
     event.preventDefault();
   }
 
