@@ -37,7 +37,6 @@ class Login extends React.Component {
     }).then(response => {
         console.log(response)
     })
-    // event.preventDefault();
   }
 
   render() {
