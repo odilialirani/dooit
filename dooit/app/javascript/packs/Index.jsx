@@ -5,6 +5,7 @@ import $ from 'jquery';
 import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import App from "../components/App";
+import 'semantic-ui-css/semantic.min.css'
 
 document.addEventListener("DOMContentLoaded", () => {
   render(
