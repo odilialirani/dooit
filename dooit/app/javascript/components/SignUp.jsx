@@ -39,8 +39,6 @@ class SignUp extends React.Component {
       },
       body: JSON.stringify(user)
     }).then(response => this.props.history.push("/users"))
-
-    event.preventDefault();
   }
 
   render() {
