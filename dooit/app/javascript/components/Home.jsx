@@ -42,9 +42,21 @@ class Home extends React.Component {
   }
 
   handleLogout() {
-    this.setState({
-      isLoggedIn: false,
-      user: {}
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    
+    fetch('http://localhost:3000/logout', {
+      method: 'POST',
+      headers: {
+        "X-CSRF-Token": token,
+        "Content-Type": "application/json",
+      },
+      credentials: 'same-origin'
+    }).then(res => {
+      console.log(res)
+      this.setState({
+        isLoggedIn: false,
+        user: {}
+      })
     })
   }
 
@@ -55,6 +67,9 @@ class Home extends React.Component {
   render() {
     const loggedInPage = (
       <Grid>
+        <Grid.Row>
+          <Button onClick={ this.handleLogout }>Logout</Button>
+        </Grid.Row>
         <Grid.Row>
           <p className="lead">
             Welcome { this.state.user.username }

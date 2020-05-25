@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios'
+import { Form, Container } from 'semantic-ui-react';
 
 class Login extends React.Component {
   constructor(props) {
@@ -15,8 +15,7 @@ class Login extends React.Component {
 
   handleChange(event) {
     this.setState({
-      username: event.target.username,
-      password: event.target.password
+      [event.target.name] : event.target.value
     });
   }
 
@@ -41,23 +40,15 @@ class Login extends React.Component {
 
   render() {
     return(
-      <div className="vw-100 vh-100 primary-color d-flex align-items-center justify-content-center">
-        <div className="jumbotron jumbotron-fluid bg-transparent">
-          <div className="container secondary-color">
-            <form onSubmit={this.handleSubmit}>
-              <label>
-                Username:
-                <input type="text" value={this.state.username} onChange={this.handleChange} />
-              </label>
-              <label>
-                Password:
-                <input type="password" value={this.state.password} onChange={this.handleChange} />
-              </label>
-              <input type="submit" value="Submit" />
-            </form>
-          </div>
-        </div>
-      </div>
+      <Container>
+        <Form>
+          <Form.Group widths='equal'>
+            <Form.Input fluid label='Username' placeholder='Username' value={this.state.username} onChange={this.handleChange} />
+            <Form.Input fluid label='Password' placeholder='Password' value={this.state.password} onChange={this.handleChange} />
+          </Form.Group>
+          <Form.Button fluid onClick={this.handleSubmit}>Submit</Form.Button>
+        </Form>
+      </Container>
     )
   }
 }

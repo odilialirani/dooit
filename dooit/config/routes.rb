@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   # Authentication routes
   post 'login', to: 'sessions#create'
   get '/logged_in', to: 'sessions#is_logged_in?'
+  post 'logout', to: 'sessions#destroy'
   delete '/logout', to: 'sessions#destroy'
 
   namespace :api do
