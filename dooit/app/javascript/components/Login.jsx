@@ -20,6 +20,7 @@ class Login extends React.Component {
 
   handleSubmit(event) {
     let token = document.querySelector('meta[name="csrf-token"]').content;
+    
     let user = {
       username: this.state.username,
       password: this.state.password,
@@ -28,10 +29,13 @@ class Login extends React.Component {
     fetch('http://localhost:3000/login', {
       method: "POST",
       headers: {
-        "X-CSRF-Token": token,
-        "Content-Type": "application/json"
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-Token': token,
+        "Content-Type": "application/json",
+        'Accept': 'application/json'
       },
       credentials: 'same-origin',
+      dataType: 'json',
       body: JSON.stringify(user)
     }).then(response => {
       console.log(response)

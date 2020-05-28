@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  
+  skip_before_action :verify_authenticity_token, :only => :create
   helper_method :login!, :logged_in?, :current_user, :authorized_user?, :logout!
   
   def login!

@@ -1,4 +1,3 @@
-require 'pry'
 require 'json'
 
 class Api::V1::UsersController < ApplicationController
