@@ -31,7 +31,7 @@ class SignUp extends React.Component {
       last_name: this.state.last_name
     }
 
-    fetch('http://localhost:3000/api/v1/users/create', {
+    fetch('/api/v1/users/create', {
       method: "POST",
       headers: {
         "X-CSRF-Token": token,

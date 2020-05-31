@@ -16,7 +16,7 @@ class Home extends React.Component {
   loginStatus() {
     const token = document.querySelector('meta[name="csrf-token"]').content;
 
-    fetch('http://localhost:3000/logged_in', {
+    fetch('/logged_in', {
       method: "GET",
       headers: {
         "X-CSRF-Token": token,
@@ -43,8 +43,9 @@ class Home extends React.Component {
 
   handleLogout() {
     const token = document.querySelector('meta[name="csrf-token"]').content;
-    
-    fetch('http://localhost:3000/logout', {
+    var url = process.env.API_URL + '/logout'
+
+    fetch(url, {
       method: 'POST',
       headers: {
         "X-CSRF-Token": token,
