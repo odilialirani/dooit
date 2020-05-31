@@ -77,7 +77,13 @@ class Home extends React.Component {
         </Grid.Row>
         <Grid.Row columns={ 3 }>
           <Grid.Column>
-            <Button>Split</Button>
+            <Link
+              to="/split"
+              className="btn btn-lg custom-button"
+              role="button"
+            >
+              Split
+            </Link>
           </Grid.Column>
           <Grid.Column>
             <Button>Stock</Button>

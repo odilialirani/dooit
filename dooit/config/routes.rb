@@ -32,6 +32,9 @@ Rails.application.routes.draw do
     namespace :split do
       namespace :v1 do
         post 'receipts/upload'
+        get 'receipts/all', to: 'receipts#index'
+
+        get 'friends/all', to: 'friends#index'
       end
     end
   end

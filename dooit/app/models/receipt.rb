@@ -4,4 +4,8 @@ class Receipt < ApplicationRecord
   belongs_to :user
 
   has_many :items
+
+  def process_image
+    
+  end
 end

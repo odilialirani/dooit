@@ -10,4 +10,12 @@ class Api::Split::V1::FriendsController < ApplicationController
 
     render json: friend
   end
+
+  def index
+    if current_user
+      render json: current_user.friends
+    else
+      render json: {}
+    end
+  end
 end
