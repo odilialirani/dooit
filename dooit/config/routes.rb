@@ -27,6 +27,15 @@ Rails.application.routes.draw do
       delete '/destroy/:id', to: 'users#destroy'
     end
   end
+
+  namespace :api do
+    namespace :split do
+      namespace :v1 do
+        post 'receipts/upload'
+      end
+    end
+  end
+
   root 'homepage#index'
   get '/*path' => 'homepage#index'
   

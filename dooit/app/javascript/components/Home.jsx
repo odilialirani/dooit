@@ -43,9 +43,8 @@ class Home extends React.Component {
 
   handleLogout() {
     const token = document.querySelector('meta[name="csrf-token"]').content;
-    var url = process.env.API_URL + '/logout'
 
-    fetch(url, {
+    fetch('/logout', {
       method: 'POST',
       headers: {
         "X-CSRF-Token": token,
