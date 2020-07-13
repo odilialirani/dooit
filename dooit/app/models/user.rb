@@ -9,4 +9,5 @@ class User < ApplicationRecord
 
   has_many :friends
   has_many :receipts
+  has_many :categories, class_name: 'Budget::Category', foreign_key: 'user_id'
 end
