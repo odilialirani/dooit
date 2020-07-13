@@ -1,58 +1,71 @@
 import React from 'react';
-import { Form, Container } from 'semantic-ui-react';
+import { Form, Container, Grid } from 'semantic-ui-react';
+import logo from '../../static/images/DOOIT.png'
+import axios from 'axios';
 
 class SplitHome extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: ''
+      receipts: [],
+      selectedFile: null
     };
+
+    this.handleUpload = this.handleUpload.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+
+  }
+
+  getRecentReceipts() {
+
   }
 
   handleChange(event) {
-    this.setState({
-      [event.target.name] : event.target.value
-    });
+    this.setState({ selectedFile: event.target.files[0] });
   }
 
-  handleSubmit(event) {
+  handleUpload(event) {
     let token = document.querySelector('meta[name="csrf-token"]').content;
-    let user = {
-      username: this.state.username,
-      password: this.state.password,
-    }
-
-    fetch('/login', {
-      method: "POST",
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-        'X-CSRF-Token': token,
-        "Content-Type": "application/json",
-        'Accept': 'application/json'
-      },
-      credentials: 'same-origin',
-      dataType: 'json',
-      body: JSON.stringify(user)
-    }).then(response => {
-      console.log(response)
-      this.props.history.push('/')
-    })
+    var data = new FormData();
+    data.append('file', this.state.selectedFile)
+    console.log(data)
+    // fetch('/api/split/v1/receipts/upload', {
+    //   method: 'POST',
+    //   headers: {
+    //     'X-Requested-With': 'XMLHttpRequest',
+    //     'X-CSRF-Token': token,
+    //     "Content-Type": "application/json",
+    //     'Accept': 'application/json'
+    //   },
+    //   credentials: 'same-origin',
+    //   body: data
+    // }).then(response => {
+    //   console.log(response)
+    // })
   }
 
   render() {
     return(
-      <Container>
-        <Form>
-          <Form.Group widths='equal'>
-            <Form.Input fluid name='username' label='Username' placeholder='Username' value={this.state.username} onChange={this.handleChange} />
-            <Form.Input type='password' fluid name='password' label='Password' placeholder='Password' value={this.state.password} onChange={this.handleChange} />
-          </Form.Group>
-          <Form.Button fluid onClick={this.handleSubmit}>Submit</Form.Button>
-        </Form>
-      </Container>
+      <div className="vw-100 vh-100 primary-color d-flex align-items-center justify-content-center">
+        <div className="jumbotron jumbotron-fluid bg-transparent">
+          <div className="container secondary-color">
+            <div>
+              <Grid>
+                <Grid.Row>
+                  <Form>
+                    <Form.Input type='file' name='receiptFile' onChange={this.handleChange}/>
+                    <Form.Button fluid onClick={this.handleUpload}>Submit</Form.Button>
+                  </Form>
+                </Grid.Row>
+              </Grid>
+            </div>
+          </div>
+        </div>
+      </div>
+      
     )
   }
 }

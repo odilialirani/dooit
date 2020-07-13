@@ -1,14 +1,20 @@
 class Api::Split::V1::ReceiptsController < ApplicationController
   def upload
-    receipt = Receipt.create(
-      s3_bucket: params[:s3_bucket],
-      s3_path: params[:s3_path]
-    )
+    if params[:file]
+      s3 = AWS::S3.new
+      obj = s3.buckets['split-receipts'].objects.create('key', params[:file])
 
-    # TODO: process through tesseract
-    receipt.process_image
+    else
+      render json: []
+    end
 
-    render json: receipt
+    # receipt = Receipt.create(
+    #   s3_bucket: params[:s3_bucket],
+    #   s3_path: params[:s3_path]
+    # )
+
+    # receipt.process_image
+    render json: {}
   end
 
   def index

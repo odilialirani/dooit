@@ -13,11 +13,7 @@ module Split
       body = object.body.read
 
       # Run the gem
-
-      # Get the data & save to db
-      # - location
-      # - date
-      # - items
+      
 
     end
     
