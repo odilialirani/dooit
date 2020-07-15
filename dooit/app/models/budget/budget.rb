@@ -3,7 +3,13 @@ module Budget
     self.table_name = 'budgets'
 
     validates :category_id, presence: true
-    validate :no_active_budget
+    validates :user_id, presence: true
+    validates :amount, presence: true
+    validates :start_date, presence: true
+    validates :end_date, presence: true
+
+    validate :end_date_in_the_past?
+    validate :no_other_active_budget
 
 
     belongs_to :category, class_name: 'Budget::Category', foreign_key: 'category_id'
@@ -11,8 +17,15 @@ module Budget
 
     scope :active, -> { where(active: true) }
 
-    def no_active_budget
-      # there should only be 1 budget per category at any time
+    def no_other_active_budget
+      errors.add(:category_id, 'Category has an active budget during that timeframe.') unless user.budgets.select do |b| 
+          b.active? && 
+          ((b.start_date..b.end_date).cover?(start_date) || (b.start_date..b.end_date).cover?(end_date))
+        end.first.nil?
+    end
+
+    def end_date_in_the_past?
+      errors.add(:end_date, 'End date cannot be in the past') if end_date < Date.current
     end
   end
 end
