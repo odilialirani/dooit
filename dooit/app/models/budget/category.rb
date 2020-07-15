@@ -5,5 +5,7 @@ module Budget
     belongs_to :user
 
     has_many :budgets, class_name: 'Budget::Budget', foreign_key: 'category_id'
+
+    scope :active, -> { where(active: true) }
   end
 end
