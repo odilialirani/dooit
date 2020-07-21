@@ -18,6 +18,7 @@ module Budget
 
     scope :active, -> { where(active: true) }
 
+    # Validations
     def no_other_active_budget
       errors.add(:category_id, 'Category has an active budget during that timeframe.') unless user.budgets.select do |b| 
           active && b.active? && 
@@ -29,6 +30,7 @@ module Budget
       errors.add(:end_date, 'End date cannot be in the past') if end_date < Date.current
     end
 
+    # Helpers
     def amount_spent
       spendings.sum(:amount)
     end

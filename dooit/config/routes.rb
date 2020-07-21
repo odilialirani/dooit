@@ -37,6 +37,14 @@ Rails.application.routes.draw do
         get 'friends/all', to: 'friends#index'
       end
     end
+
+    namespace :budget do
+      namespace :v1 do
+        namespace :page do
+          get 'homepage'
+        end
+      end
+    end
   end
 
   root 'homepage#index'

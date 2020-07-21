@@ -11,4 +11,4 @@ class Api::Budget::V1::BudgetController < ApplicationController
 
     render json: budget
   end
-end
+end 
