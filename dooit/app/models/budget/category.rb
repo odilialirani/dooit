@@ -7,5 +7,10 @@ module Budget
     has_many :budgets, class_name: 'Budget::Budget', foreign_key: 'category_id'
 
     scope :active, -> { where(active: true) }
+
+    def budget
+      # returns current active budget
+      budgets.active.first
+    end
   end
 end

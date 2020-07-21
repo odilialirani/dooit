@@ -11,4 +11,42 @@ class User < ApplicationRecord
   has_many :receipts
   has_many :categories, class_name: 'Budget::Category', foreign_key: 'user_id'
   has_many :budgets, class_name: 'Budget::Budget', foreign_key: 'user_id'
+
+  def get_homepage_hash
+      # {
+      #   id: {
+      #     title: 'Food',
+      #     budget_start_date: '',
+      #     budget_end_date: '',
+      #     spend_amount: '',
+      #     budget_amount: '',
+      #     spendings: [
+      #       {
+      #         location: '',
+      #         amount: ''
+      #       },
+      #     ]
+      #   }
+      # }
+      categories.active.each_with_object({}) do |category, hsh|
+        budget = category.budgets.active.first
+        spendings = 
+          budget.
+          spendings.
+          each_with_object([]) do |spending, arr|
+            arr << {
+              location: spending.location,
+              amount: spending.amount
+            }
+          end
+        hsh[category.id] = {
+          title: category.title,
+          budget_start_date: budget&.start_date,
+          budget_end_date: budget&.end_date,
+          budget_amount: budget&.amount,
+          budget_spent: budget&.amount_spent,
+          spendings: spendings
+        }
+      end
+    end
 end
