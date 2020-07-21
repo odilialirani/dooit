@@ -11,6 +11,7 @@ module Budget
     validate :end_date_in_the_past?
     validate :no_other_active_budget
 
+    has_many :spendings, class_name: 'Budget::Spending', foreign_key: 'budget_id'
 
     belongs_to :category, class_name: 'Budget::Category', foreign_key: 'category_id'
     belongs_to :user, class_name: 'User', foreign_key: 'user_id'
@@ -26,6 +27,10 @@ module Budget
 
     def end_date_in_the_past?
       errors.add(:end_date, 'End date cannot be in the past') if end_date < Date.current
+    end
+
+    def amount_spent
+      spendings.sum(:amount)
     end
 
     # TODO: we need a hook to deactivate/activate budgets
