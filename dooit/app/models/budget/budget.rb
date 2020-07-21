@@ -19,7 +19,7 @@ module Budget
 
     def no_other_active_budget
       errors.add(:category_id, 'Category has an active budget during that timeframe.') unless user.budgets.select do |b| 
-          b.active? && 
+          active && b.active? && 
           ((b.start_date..b.end_date).cover?(start_date) || (b.start_date..b.end_date).cover?(end_date))
         end.first.nil?
     end
@@ -27,5 +27,7 @@ module Budget
     def end_date_in_the_past?
       errors.add(:end_date, 'End date cannot be in the past') if end_date < Date.current
     end
+
+    # TODO: we need a hook to deactivate/activate budgets
   end
 end
