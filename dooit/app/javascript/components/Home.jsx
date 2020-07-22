@@ -89,7 +89,13 @@ class Home extends React.Component {
             <Button>Stock</Button>
           </Grid.Column>
           <Grid.Column>
-            <Button>Analytics</Button>
+            <Link
+              to="/budget"
+              className="btn btn-lg custom-button"
+              role="button"
+            >
+              Budget
+            </Link>
           </Grid.Column>
         </Grid.Row>
       </Grid>

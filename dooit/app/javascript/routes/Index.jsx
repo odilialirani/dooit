@@ -6,6 +6,7 @@ import Users from "../components/Users";
 import Login from "../components/Login";
 import SignUp from "../components/SignUp";
 import SplitHome from "../components/split/SplitHome";
+import BudgetHome from "../components/budget/BudgetHome";
 
 export default (
   <Router>
@@ -16,6 +17,7 @@ export default (
       <Route path="/login" exact component={Login} />
 
       <Route path="/split" exact component={SplitHome} />
+      <Route path="/budget" exact component={BudgetHome} />
     </Switch>
   </Router>
 );
