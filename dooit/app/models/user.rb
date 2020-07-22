@@ -13,8 +13,9 @@ class User < ApplicationRecord
   has_many :budgets, class_name: 'Budget::Budget', foreign_key: 'user_id'
 
   def get_homepage_hash
-      # {
-      #   id: {
+      # [
+      #   {
+      #     id: 1,
       #     title: 'Food',
       #     budget_start_date: '',
       #     budget_end_date: '',
@@ -27,8 +28,8 @@ class User < ApplicationRecord
       #       },
       #     ]
       #   }
-      # }
-      categories.active.each_with_object({}) do |category, hsh|
+      # ]
+      categories.active.each_with_object([]) do |category, array|
         budget = category.budgets.active.first
         spendings = 
           budget.
@@ -39,7 +40,8 @@ class User < ApplicationRecord
               amount: spending.amount
             }
           end
-        hsh[category.id] = {
+        array << {
+          id: category.id,
           title: category.title,
           budget_start_date: budget&.start_date,
           budget_end_date: budget&.end_date,
