@@ -43,6 +43,7 @@ class User < ApplicationRecord
         array << {
           id: category.id,
           title: category.title,
+          budget_id: budget&.id,
           budget_start_date: budget&.start_date,
           budget_end_date: budget&.end_date,
           budget_amount: budget&.amount,
