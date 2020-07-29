@@ -8,4 +8,18 @@ class Api::Budget::V1::PageController < ApplicationController
     end
   end
 
+  def add_spending
+    if current_user
+      spending = Budget::Spending.create(
+        budget_id: params[:budget_id],
+        amount: params[:amount],
+        location: params[:location],
+        date: params[:date]
+      )
+
+      render json: spending
+    else
+      render json: {}
+    end
+  end
 end

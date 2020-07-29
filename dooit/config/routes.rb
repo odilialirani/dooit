@@ -42,6 +42,7 @@ Rails.application.routes.draw do
       namespace :v1 do
         namespace :page do
           get 'homepage'
+          post 'add_spending'
         end
       end
     end
