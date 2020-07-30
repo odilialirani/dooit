@@ -5,6 +5,7 @@ import {
   Dropdown
 } from 'semantic-ui-react';
 import SharedHeader from '../Header';
+import BudgetModalContent from './BudgetModalContent';
 import _ from 'lodash'
 
 class BudgetHome extends React.Component {
@@ -13,15 +14,13 @@ class BudgetHome extends React.Component {
     this.state = {
       categories: [],
       selectedBudget: '',
-      openSpendingModal: false
     };
 
     this.getHomepageData = this.getHomepageData.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
-    this.submitSpending = this.submitSpending.bind(this);
-    this.openSpendingModal = this.openSpendingModal.bind(this);
-    this.closeSpendingModal = this.closeSpendingModal.bind(this);
+    this.openBudgetModal = this.openBudgetModal.bind(this);
+    this.closeBudgetModal = this.closeBudgetModal.bind(this);
   }
 
   getHomepageData() {
@@ -68,43 +67,15 @@ class BudgetHome extends React.Component {
     });
   }
 
-  openSpendingModal() {
+  openBudgetModal() {
     this.setState({
-      openSpendingModal: true
+      openBudgetModal: true
     })
   }
 
-  closeSpendingModal() {
+  closeBudgetModal() {
     this.setState({
-      openSpendingModal: false
-    })
-  }
-
-  submitSpending() {
-    const token = document.querySelector('meta[name="csrf-token"]').content;
-    let data = {
-      date: this.state.date,
-      budget_id: this.state.selectedBudget,
-      amount: this.state.amount,
-      location: this.state.location
-    }
-
-    fetch('/api/budget/v1/page/add_spending', {
-      method: 'POST',
-      headers: {
-        'X-CSRF-Token': token,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    }).then(response => {
-      if (response.status == 200) {
-        this.getHomepageData();
-        this.setState({
-          openSpendingModal: false
-        })
-      } else {
-        console.log(response);
-      }
+      openBudgetModal: false
     })
   }
 
@@ -118,65 +89,6 @@ class BudgetHome extends React.Component {
         top: 'auto'
       }
     };
-
-    let spendingModal = (
-      <Modal style={inlineStyle.modal} open={this.state.openSpendingModal}>
-        <Modal.Header>
-          Add new spending
-        </Modal.Header>
-        <Modal.Content>
-          <div>
-            <Header sub>
-              Location
-            </Header>
-            <Input 
-              name='location'
-              value={ this.state.location }
-              onChange={ this.handleChange }
-            />
-          </div>
-          <br />
-          <div>
-            <Header sub>
-              Amount
-            </Header>
-            <Input 
-              name='amount'
-              type='number'
-              value={ this.state.amount }
-              onChange={ this.handleChange }
-            />
-          </div>
-          <br />
-          <div>
-            <Header sub>
-              Date
-            </Header>
-            <Input 
-              name='date'
-              type='date'
-              value={ this.state.date }
-              onChange={ this.handleChange }
-            />
-          </div>
-          <br />
-          <Header sub>
-            Budget
-          </Header>
-          <Dropdown
-            placeholder='Select Budget'
-            fluid
-            selection
-            options={ this.state.budgetOptions }
-            onChange={ this.handleSelect }
-          />
-        </Modal.Content>
-        <Modal.Actions>
-          <Button positive onClick={this.submitSpending}>Submit</Button>
-          <Button negative onClick={this.closeSpendingModal}>Cancel</Button>
-        </Modal.Actions>
-      </Modal>
-    )
 
     let cards = this.state.categories.map((data, index) =>
       <Card key={index}>
@@ -198,7 +110,10 @@ class BudgetHome extends React.Component {
     )
     return(
       <Container>
-        { spendingModal }
+        <Modal style={inlineStyle.modal} size='small' open={this.state.openBudgetModal}>
+          <Modal.Header>ADD</Modal.Header>
+          <BudgetModalContent openModal={this.openBudgetModal} closeModal={this.closeBudgetModal}/>
+        </Modal>
         <Grid centered columns={2}>
           <Grid.Column width={4}>
             <SharedHeader currentPage='budget' />
@@ -211,7 +126,9 @@ class BudgetHome extends React.Component {
             </Grid.Row>
             <br />
             <Grid.Row>
-              <Button onClick={this.openSpendingModal}>Add Spending</Button>
+              <Grid.Column>
+                <Button onClick={this.openBudgetModal}>Add</Button>
+              </Grid.Column>
             </Grid.Row>
           </Grid.Column>
         </Grid>
