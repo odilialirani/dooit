@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   Modal, Button, Header, Input, Dropdown,
-  Grid
+  Grid, Item
 } from 'semantic-ui-react';
 import _ from 'lodash'
 
@@ -18,6 +18,20 @@ class BudgetModalContent extends React.Component {
     this.categoryContent = this.categoryContent.bind(this);
     this.spendingContent = this.spendingContent.bind(this);
     this.submitSpending = this.submitSpending.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  handleSelect(event, data) {
+    this.setState({
+      selectedBudget: data.value
+    });
   }
 
   submitSpending() {
@@ -38,10 +52,8 @@ class BudgetModalContent extends React.Component {
       body: JSON.stringify(data)
     }).then(response => {
       if (response.status == 200) {
-        this.getHomepageData();
-        this.setState({
-          openSpendingModal: false
-        })
+        this.props.refreshData();
+        this.props.closeModal();
       } else {
         console.log(response);
       }
@@ -54,7 +66,6 @@ class BudgetModalContent extends React.Component {
         margin: 0
       }
     }
-
     return(
       <Modal.Content>
         <Grid>
@@ -111,60 +122,79 @@ class BudgetModalContent extends React.Component {
   }
 
   spendingContent() {
+    let inlineStyle = {
+      row: {
+        margin: 0
+      }
+    }
     return(
-      <div>
       <Modal.Content>
-        <div>
-          <Header sub>
-            Location
-          </Header>
-          <Input 
-            name='location'
-            value={ this.state.location }
-            onChange={ this.handleChange }
-          />
-        </div>
-        <br />
-        <div>
-          <Header sub>
-            Amount
-          </Header>
-          <Input 
-            name='amount'
-            type='number'
-            value={ this.state.amount }
-            onChange={ this.handleChange }
-          />
-        </div>
-        <br />
-        <div>
-          <Header sub>
-            Date
-          </Header>
-          <Input 
-            name='date'
-            type='date'
-            value={ this.state.date }
-            onChange={ this.handleChange }
-          />
-        </div>
-        <br />
-        <Header sub>
-          Budget
-        </Header>
-        <Dropdown
-          placeholder='Select Budget'
-          fluid
-          selection
-          options={ this.props.budgetOptions }
-          onChange={ this.handleSelect }
-        />
+        <Grid>
+          <Grid.Row style={inlineStyle.row}>
+            <Header sub>Add new spending</Header>
+          </Grid.Row>
+          <Grid.Row style={inlineStyle.row}>
+            <Item>
+              <Item.Header>LOCATION</Item.Header>
+              <Item.Content>
+                <Input
+                  name='location'
+                  value={this.state.location}
+                  onChange={this.handleChange}
+                />
+              </Item.Content>
+            </Item>
+          </Grid.Row>
+          <Grid.Row style={inlineStyle.row}>
+            <Item>
+              <Item.Header>AMOUNT</Item.Header>
+              <Item.Content>
+                <Input
+                  name='amount'
+                  type='number'
+                  value={this.state.amount}
+                  onChange={this.handleChange}
+                />
+              </Item.Content>
+            </Item>
+          </Grid.Row>
+          <Grid.Row style={inlineStyle.row}>
+            <Item>
+              <Item.Header>DATE</Item.Header>
+              <Item.Content>
+                <Input
+                  name='date'
+                  type='date'
+                  value={this.state.date}
+                  onChange={this.handleChange}
+                />
+              </Item.Content>
+            </Item>
+          </Grid.Row>
+          <Grid.Row style={inlineStyle.row}>
+            <Item>
+              <Item.Header>BUDGET</Item.Header>
+              <Item.Content>
+                <Dropdown
+                  placeholder='Select Budget'
+                  fluid
+                  selection
+                  options={ this.props.budgetOptions }
+                  onChange={ this.handleSelect }
+                />
+              </Item.Content>
+            </Item>
+          </Grid.Row>
+          <Grid.Row style={inlineStyle.row} columns={2}>
+            <Grid.Column>
+              <Button fluid positive onClick={this.submitSpending}>Submit</Button>
+            </Grid.Column>
+            <Grid.Column>
+              <Button fluid negative onClick={this.props.closeModal}>Cancel</Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </Modal.Content>
-      <Modal.Actions>
-        <Button positive onClick={this.submitSpending}>Submit</Button>
-        <Button negative onClick={this.closeSpendingModal}>Cancel</Button>
-      </Modal.Actions>
-      </div>
     )
   }
 

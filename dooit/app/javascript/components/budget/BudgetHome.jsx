@@ -111,8 +111,8 @@ class BudgetHome extends React.Component {
     return(
       <Container>
         <Modal style={inlineStyle.modal} size='small' open={this.state.openBudgetModal}>
-          <Modal.Header>ADD</Modal.Header>
-          <BudgetModalContent openModal={this.openBudgetModal} closeModal={this.closeBudgetModal}/>
+          <Modal.Header>DOOIT:Budget - ADD</Modal.Header>
+          <BudgetModalContent closeModal={this.closeBudgetModal} budgetOptions={this.state.budgetOptions} refreshData={this.getHomepageData}/>
         </Modal>
         <Grid centered columns={2}>
           <Grid.Column width={4}>
