@@ -17,6 +17,7 @@ class BudgetModalContent extends React.Component {
     this.budgetContent = this.budgetContent.bind(this);
     this.categoryContent = this.categoryContent.bind(this);
     this.spendingContent = this.spendingContent.bind(this);
+    this.submitCategory = this.submitCategory.bind(this);
     this.submitSpending = this.submitSpending.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
@@ -32,6 +33,30 @@ class BudgetModalContent extends React.Component {
     this.setState({
       selectedBudget: data.value
     });
+  }
+
+  submitCategory() {
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    let data = {
+      title: this.state.title
+    }
+
+    fetch('/api/budget/v1/page/add_category', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then(response => {
+      if (response.status == 200) {
+        console.log('done')
+        this.props.refreshData();
+        this.props.closeModal();
+      } else {
+        console.log(response)
+      }
+    })
   }
 
   submitSpending() {
@@ -114,9 +139,37 @@ class BudgetModalContent extends React.Component {
   }
 
   categoryContent() {
+    let inlineStyle = {
+      row: {
+        margin: 0
+      }
+    }
+
     return(
       <Modal.Content>
-
+        <Grid>
+          <Grid.Row style={inlineStyle.row}>
+            <Header sub>Add new category</Header>
+          </Grid.Row>
+          <Grid.Row style={inlineStyle.row}>
+            <Item>
+              <Item.Header>TITLE</Item.Header>
+              <Input
+                name='title'
+                value={this.state.title}
+                onChange={this.handleChange}
+              />
+            </Item>
+          </Grid.Row>
+          <Grid.Row style={inlineStyle.row} columns={2}>
+            <Grid.Column>
+              <Button fluid positive onClick={this.submitCategory}>Submit</Button>
+            </Grid.Column>
+            <Grid.Column>
+              <Button fluid negative onClick={this.props.closeModal}>Cancel</Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </Modal.Content>
     )
   }

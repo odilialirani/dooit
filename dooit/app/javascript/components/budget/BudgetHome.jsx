@@ -127,7 +127,7 @@ class BudgetHome extends React.Component {
             <br />
             <Grid.Row>
               <Grid.Column>
-                <Button onClick={this.openBudgetModal}>Add</Button>
+                <Button fluid onClick={this.openBudgetModal}>Add</Button>
               </Grid.Column>
             </Grid.Row>
           </Grid.Column>
