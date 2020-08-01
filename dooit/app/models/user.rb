@@ -32,8 +32,8 @@ class User < ApplicationRecord
       categories.active.each_with_object([]) do |category, array|
         budget = category.budgets.active.first
         spendings = 
-          budget.
-          spendings.
+          budget&.
+          spendings&.
           each_with_object([]) do |spending, arr|
             arr << {
               location: spending.location,
