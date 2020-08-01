@@ -6,6 +6,8 @@ module Budget
 
     has_many :budgets, class_name: 'Budget::Budget', foreign_key: 'category_id'
 
+    validates :title, uniqueness: true
+
     scope :active, -> { where(active: true) }
 
     def budget
