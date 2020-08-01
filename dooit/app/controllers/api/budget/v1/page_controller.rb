@@ -4,7 +4,7 @@ class Api::Budget::V1::PageController < ApplicationController
     if current_user
       render json: current_user.get_homepage_hash
     else
-      render json: {}
+      render status: 401
     end
   end
 
@@ -19,7 +19,25 @@ class Api::Budget::V1::PageController < ApplicationController
 
       render json: spending
     else
-      render json: {}
+      render status: 401
+    end
+  end
+
+  def add_category
+    if current_user
+      begin
+        category = Budget::Category.create(
+          title: params[:title],
+          active: true,
+          user: current_user
+        )
+
+        render json: category, status: 200
+      rescue ActiveRecord::RecordInvalid => e
+        render json: e, status: 400
+      end
+    else
+      render status: 401
     end
   end
 end
