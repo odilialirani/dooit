@@ -43,6 +43,7 @@ Rails.application.routes.draw do
         namespace :page do
           get 'homepage'
           post 'add_spending'
+          post 'add_category'
         end
       end
     end
