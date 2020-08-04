@@ -40,4 +40,25 @@ class Api::Budget::V1::PageController < ApplicationController
       render status: 401
     end
   end
+
+  def add_budget
+    if current_user
+      begin
+         budget = Budget::Budget.create(
+          user: current_user,
+          category_id: params[:category],
+          start_date: params[:start_date],
+          end_date: params[:end_date],
+          amount: params[:amount],
+          active: true
+        )
+
+         render json: budget, status: 200
+      rescue ActiveRecord::RecordInvalid => e
+        render json: e, status: 400
+      end
+    else
+      render status: 401
+    end
+  end
 end

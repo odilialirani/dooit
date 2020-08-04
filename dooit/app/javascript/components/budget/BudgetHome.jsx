@@ -44,9 +44,16 @@ class BudgetHome extends React.Component {
         value: d['budget_id']
       }))
 
+      let categoryOptions = _.map(data, (d, index) => ({
+        key: d['id'],
+        text: d['title'],
+        value: d['id']
+      }))
+
       this.setState({
         categories: data,
-        budgetOptions: budgetOptions
+        budgetOptions: budgetOptions,
+        categoryOptions: categoryOptions
       });
     });
   }
@@ -112,7 +119,12 @@ class BudgetHome extends React.Component {
       <Container>
         <Modal style={inlineStyle.modal} size='small' open={this.state.openBudgetModal}>
           <Modal.Header>DOOIT:Budget - ADD</Modal.Header>
-          <BudgetModalContent closeModal={this.closeBudgetModal} budgetOptions={this.state.budgetOptions} refreshData={this.getHomepageData}/>
+          <BudgetModalContent 
+            closeModal={this.closeBudgetModal} 
+            budgetOptions={this.state.budgetOptions} 
+            categoryOptions={this.state.categoryOptions}
+            refreshData={this.getHomepageData}
+          />
         </Modal>
         <Grid centered columns={2}>
           <Grid.Column width={4}>

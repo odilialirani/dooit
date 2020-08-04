@@ -17,8 +17,11 @@ class BudgetModalContent extends React.Component {
     this.budgetContent = this.budgetContent.bind(this);
     this.categoryContent = this.categoryContent.bind(this);
     this.spendingContent = this.spendingContent.bind(this);
+    
     this.submitCategory = this.submitCategory.bind(this);
     this.submitSpending = this.submitSpending.bind(this);
+    this.submitBudget = this.submitBudget.bind(this);
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
   }
@@ -31,8 +34,35 @@ class BudgetModalContent extends React.Component {
 
   handleSelect(event, data) {
     this.setState({
-      selectedBudget: data.value
+      [data.name]: data.value
     });
+  }
+
+
+  submitBudget() {
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    let data = {
+      category: this.state.selectedCategory,
+      start_date: this.state.start_date,
+      end_date: this.state.end_date,
+      amount: this.state.budget_amount
+    }
+    
+    fetch('/api/budget/v1/page/add_budget', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then(response => {
+      if (response.status == 200) {
+        this.props.refreshData();
+        this.props.closeModal();
+      } else {
+        console.log(response)
+      }
+    })
   }
 
   submitCategory() {
@@ -129,11 +159,81 @@ class BudgetModalContent extends React.Component {
   }
 
   budgetContent() {
+    let inlineStyle = {
+      row: {
+        margin: 0
+      }
+    }
+
     return(
       <Modal.Content>
-        <Button>
-          Category
-        </Button>
+        <Grid>
+          <Grid.Row style={inlineStyle.row}>
+            <Header sub>Add new budget</Header>
+          </Grid.Row>
+          <Grid.Row style={inlineStyle.row}>
+            <Item>
+              <Item.Header>Category</Item.Header>
+              <Item.Content>
+                <Dropdown
+                  placeholder='Select Category'
+                  fluid
+                  selection
+                  name='selectedCategory'
+                  options={ this.props.categoryOptions }
+                  onChange={ this.handleSelect }
+                />
+              </Item.Content>
+            </Item>
+          </Grid.Row>
+          <Grid.Row style={inlineStyle.row}>
+            <Item>
+              <Item.Header>Start Date</Item.Header>
+              <Item.Content>
+                <Input
+                  name='start_date'
+                  type='date'
+                  value={this.state.start_date}
+                  onChange={this.handleChange}
+                />
+              </Item.Content>
+            </Item>
+          </Grid.Row>
+          <Grid.Row style={inlineStyle.row}>
+            <Item>
+              <Item.Header>End Date</Item.Header>
+              <Item.Content>
+                <Input
+                  name='end_date'
+                  type='date'
+                  value={this.state.end_date}
+                  onChange={this.handleChange}
+                />
+              </Item.Content>
+            </Item>
+          </Grid.Row>
+          <Grid.Row style={inlineStyle.row}>
+            <Item>
+              <Item.Header>Amount</Item.Header>
+              <Item.Content>
+                <Input
+                  name='budget_amount'
+                  type='number'
+                  value={this.state.budget_amount}
+                  onChange={this.handleChange}
+                />
+              </Item.Content>
+            </Item>
+          </Grid.Row>
+          <Grid.Row style={inlineStyle.row} columns={2}>
+            <Grid.Column>
+              <Button fluid positive onClick={this.submitBudget}>Submit</Button>
+            </Grid.Column>
+            <Grid.Column>
+              <Button fluid negative onClick={this.props.closeModal}>Cancel</Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </Modal.Content>
     )
   }
@@ -232,6 +332,7 @@ class BudgetModalContent extends React.Component {
                   placeholder='Select Budget'
                   fluid
                   selection
+                  name='selectedBudget'
                   options={ this.props.budgetOptions }
                   onChange={ this.handleSelect }
                 />

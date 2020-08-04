@@ -44,6 +44,7 @@ Rails.application.routes.draw do
           get 'homepage'
           post 'add_spending'
           post 'add_category'
+          post 'add_budget'
         end
       end
     end

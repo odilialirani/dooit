@@ -20,7 +20,7 @@ module Budget
 
     # Validations
     def no_other_active_budget
-      errors.add(:category_id, 'Category has an active budget during that timeframe.') unless user.budgets.select do |b| 
+      errors.add(:category_id, 'Category has an active budget during that timeframe.') unless category.budgets.select do |b| 
           active && b.active? && 
           ((b.start_date..b.end_date).cover?(start_date) || (b.start_date..b.end_date).cover?(end_date))
         end.first.nil?
