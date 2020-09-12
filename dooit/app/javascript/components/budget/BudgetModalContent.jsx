@@ -179,6 +179,7 @@ class BudgetModalContent extends React.Component {
                   placeholder='Select Category'
                   fluid
                   selection
+                  scrolling
                   name='selectedCategory'
                   options={ this.props.categoryOptions }
                   onChange={ this.handleSelect }
@@ -281,7 +282,7 @@ class BudgetModalContent extends React.Component {
       }
     }
     return(
-      <Modal.Content>
+      <Modal.Content scrolling>
         <Grid>
           <Grid.Row style={inlineStyle.row}>
             <Header sub>Add new spending</Header>
@@ -332,6 +333,7 @@ class BudgetModalContent extends React.Component {
                   placeholder='Select Budget'
                   fluid
                   selection
+                  scrolling
                   name='selectedBudget'
                   options={ this.props.budgetOptions }
                   onChange={ this.handleSelect }
